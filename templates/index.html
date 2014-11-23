@@ -28,22 +28,25 @@
     </div>
     
     <div class="search-bar">
-      <input data-bind="value: keyword" class="search-area">
+      <input data-bind="value: keyword" class="search-area" placeholder="search for popular places">
       <button class="search-button"></button>
     </div>
 
     <div id="infolistBox">
       <div class="list-title" data-bind="click: listToggle"><img src="images/ic_place_grey600_18dp.png"><h2>Popular Places</h2></div>
-      <ul class="infolist" data-bind="foreach: filteredList, visible: listBoolean">
-        <li data-bind="click: $root.clickMarker">
-          <hr>
-          <p><span class="v-name" data-bind="text: venue.name"></span></p>
-          <p class="v-category"><span data-bind="text: venue.categories[0].name"></span></p>
-          <p class="v-address"><span data-bind="text: venue.location.formattedAddress"></span></p>
-          <p class="v-contact"><span data-bind="text: venue.contact.formattedPhone"></span></p>
-          <p><strong>Tips: </strong><span data-bind="text: tips[0].text"></span></p>
-        </li>
-      </ul>
+      <div data-bind="visible: listBoolean">
+        <ul class="infolist" data-bind="foreach: filteredList">
+          <li data-bind="click: $root.clickMarker">
+            <hr>
+            <p><span class="v-name" data-bind="text: venue.name"></span></p>
+            <p class="v-category"><span data-bind="text: venue.categories[0].name"></span></p>
+            <p class="v-address"><span data-bind="text: venue.location.formattedAddress"></span></p>
+            <p class="v-contact"><span data-bind="text: venue.contact.formattedPhone"></span></p>
+            <p><strong>Tips: </strong><span data-bind="text: tips[0].text"></span></p>
+          </li>
+        </ul>
+        <span class="no-result" data-bind="visible: !filteredList().length">No Result Found</span>
+      </div>
     </div>
 
   </body>

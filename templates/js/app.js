@@ -23,7 +23,7 @@ function MapViewModel() {
   self.neighborhood = ko.observable(defaultNeighborhood); // defined neighborhood
   self.keyword = ko.observable(''); // search keyword. This keyword is used for place filtering
   self.listBoolean = ko.observable(true); // boolean value for list toggle
-  self.settingsBoolean = ko.observable(false); // boolean value for setting toggle
+  self.settingsBoolean = ko.observable(true); // boolean value for setting toggle
 
   // list toggle method. open/close the list view
   self.listToggle = function() {

@@ -292,6 +292,13 @@ p.v-contact {
   width: 70px;
 }
 
+.no-result {
+  position: fixed;
+  top: 120px;
+  right: 110px;
+  color: #9E9E9E;
+}
+
 @media (max-width: 900px) {
   #infolistBox {
     display: none;
