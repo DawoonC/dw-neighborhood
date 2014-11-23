@@ -114,7 +114,6 @@ function MapViewModel() {
     infowindow = new google.maps.InfoWindow();
   }
 
-
   // set neighborhood marker on the map and get popular places from API
   function getNeighborhoodInformation(placeData) {
     var lat = placeData.geometry.location.k;

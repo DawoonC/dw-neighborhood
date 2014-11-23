@@ -13,7 +13,7 @@ body {
   max-width: 240px;
   z-index: 100;
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
   left: 20px;
 }
 
@@ -297,11 +297,3 @@ p.v-contact {
     display: none;
   }
 }
-
-@media (max-width: 400px) {
-  .search-bar {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
