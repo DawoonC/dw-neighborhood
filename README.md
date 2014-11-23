@@ -1,4 +1,4 @@
-# DW Frogger
+# DW Neighborhood
 A neighborhood map page for the project of Front-End Nanodegree at Udacity. This web app shows popular places in the user defined location.
 
 <br>
