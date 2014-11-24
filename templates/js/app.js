@@ -1,8 +1,9 @@
 // MapMarkerSet class contains information of map markers for searching.
-var MapMarkerSet = function(marker, name, category) {
+var MapMarkerSet = function(marker, name, category, position) {
   this.marker = marker,
   this.name = name,
-  this.category = category
+  this.category = category,
+  this.position = position
 };
 
 
@@ -69,6 +70,7 @@ function MapViewModel() {
     for (var i in venueMarkers) {
       if (venueMarkers[i].name === venueName) {
         google.maps.event.trigger(venueMarkers[i].marker, 'click');
+        map.setCenter(venueMarkers[i].position);
       }
     }
   };
@@ -194,6 +196,7 @@ function MapViewModel() {
     var lng = venue.location.lng;
     var name = venue.name;
     var category = venue.categories[0].name;
+    var position = new google.maps.LatLng(lat, lng);
     var address = venue.location.formattedAddress;
     var contact = venue.contact.formattedPhone;
     var foursquareUrl = "https://foursquare.com/v/" + venue.id;
@@ -226,10 +229,10 @@ function MapViewModel() {
     // marker of a popular place
     var marker = new google.maps.Marker({
       map: map,
-      position: new google.maps.LatLng(lat, lng),
+      position: position,
       title: name
     });
-    venueMarkers.push(new MapMarkerSet(marker, name.toLowerCase(), category.toLowerCase()));
+    venueMarkers.push(new MapMarkerSet(marker, name.toLowerCase(), category.toLowerCase(), position));
 
     // DOM element for infowindow content
     var startingToken = '<div class="infowindow"><p><span class="v-name">' + name +
