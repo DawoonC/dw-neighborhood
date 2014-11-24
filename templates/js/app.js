@@ -42,6 +42,8 @@ function MapViewModel() {
       self.settingsBoolean(true);
     }
   };
+
+  // fit map height to window size
   self.mapSize = ko.computed(function() {
     $("#map").height($(window).height());
   });
@@ -149,10 +151,12 @@ function MapViewModel() {
 
       // change the map zoom level by suggested bounds
       var bounds = data.response.suggestedBounds;
-      mapBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(bounds.sw.lat, bounds.sw.lng),
-        new google.maps.LatLng(bounds.ne.lat, bounds.ne.lng));
-      map.fitBounds(mapBounds);
+      if (bounds != undefined) {
+        mapBounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(bounds.sw.lat, bounds.sw.lng),
+          new google.maps.LatLng(bounds.ne.lat, bounds.ne.lng));
+        map.fitBounds(mapBounds);
+      }
     });
   }
 
@@ -244,8 +248,14 @@ function MapViewModel() {
       endingToken = '</span></p>';
     }
 
-    var fsToken = '<p><a href="' + foursquareUrl + '" target="_blank"><img class="fs-icon" src="images/Foursquare-icon.png"></a>' +
-      '<span class="v-rating">' + rating.toFixed(1) + '</span><img src="' + ratingImg + '" class="rating-stars"></p></div>'; 
+    var fsToken;
+    if (rating != undefined) {
+      fsToken = '<p><a href="' + foursquareUrl + '" target="_blank"><img class="fs-icon" src="images/Foursquare-icon.png"></a>' +
+        '<span class="v-rating">' + rating.toFixed(1) + '</span><img src="' + ratingImg + '" class="rating-stars"></p></div>';
+    } else {
+      fsToken = '<p><a href="' + foursquareUrl + '" target="_blank"><img class="fs-icon" src="images/Foursquare-icon.png"></a>' + 
+        '<span class="v-rating"><em>no rating available</em></span></p></div>';
+    }
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(startingToken + endingToken + fsToken);

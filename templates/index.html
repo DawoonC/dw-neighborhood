@@ -42,7 +42,15 @@
             <p class="v-category"><span data-bind="text: venue.categories[0].name"></span></p>
             <p class="v-address"><span data-bind="text: venue.location.formattedAddress"></span></p>
             <p class="v-contact"><span data-bind="text: venue.contact.formattedPhone"></span></p>
-            <p><strong>Tips: </strong><span data-bind="text: tips[0].text"></span></p>
+            <p>
+              <strong>Tips: </strong>
+              <span data-bind="if: $data.tips">
+                <span data-bind="text: tips[0].text"></span>
+              </span>
+              <span data-bind="ifnot: $data.tips">
+                <em>no tips available.</em>
+              </span>
+            </p>
           </li>
         </ul>
         <span class="no-result" data-bind="visible: !filteredList().length">No Result Found</span>
