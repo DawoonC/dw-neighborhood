@@ -70,7 +70,7 @@ function MapViewModel() {
     for (var i in venueMarkers) {
       if (venueMarkers[i].name === venueName) {
         google.maps.event.trigger(venueMarkers[i].marker, 'click');
-        map.setCenter(venueMarkers[i].position);
+        map.panTo(venueMarkers[i].position);
       }
     }
   };
