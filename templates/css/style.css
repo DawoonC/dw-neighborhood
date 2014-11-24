@@ -29,6 +29,7 @@ body {
   margin-right: auto;
   margin-left: 0px;
   display: block;
+  cursor: pointer;
 }
 
 .settings-icon:before {
@@ -69,6 +70,7 @@ body {
   margin: 0px;
   margin-bottom: 15px;
   color: #535353;
+  cursor: default;
 }
 
 .settings-area {
@@ -132,6 +134,7 @@ body {
   border-bottom-right-radius: 2px;
   padding: 0px;
   outline: 0;
+  cursor: pointer;
 }
 
 .search-button:before {
