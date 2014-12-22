@@ -302,8 +302,104 @@ p.v-contact {
   color: #9E9E9E;
 }
 
+.slider {
+  display: none;
+}
+
 @media (max-width: 900px) {
   #infolistBox {
     display: none;
+  }
+
+  .settings {
+    bottom: 115px;
+  }
+
+  .animate {
+    transition: transform 0.3s ease-out;
+  }
+
+  .slider {
+    display: block;
+    width: 90%;
+    height: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    bottom: 10px;
+    left: 10px;
+    z-index: 103;
+    position: fixed;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    border-radius: 3px;
+  }
+
+  .holder {
+    width: 2000%;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 90%;
+    height: 100%;
+    float: left;
+    height: 90px;
+    position: relative;
+    overflow: hidden;
+    color: #535353;
+  }
+
+  .slide p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .ms-touch.slider {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    
+    -ms-overflow-style: none;
+    /* Hides the scrollbar. */
+    
+    -ms-scroll-chaining: none;
+    /* Prevents Metro from swiping to the next tab or app. */
+    
+    -ms-scroll-snap-type: mandatory;
+    /* Forces a snap scroll behavior on your images. */
+    
+    -ms-scroll-snap-points-x: snapInterval(0%, 100%);
+    /* Defines the y and x intervals to snap to when scrolling. */
+  }
+
+  .left-arrow {
+    position: fixed;
+    left: 7px;
+    bottom: 30px;
+  }
+
+  .right-arrow {
+    position: fixed;
+    right: 7px;
+    bottom: 30px;
+  }
+
+  .no-result {
+    position: fixed;
+    bottom: 45px;
+    top: initial;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    color: #9E9E9E;
   }
 }

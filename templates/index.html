@@ -57,5 +57,18 @@
       </div>
     </div>
 
+    <div class="slider">
+      <img src="images/ic_keyboard_arrow_left_grey600_24dp.png" class="left-arrow" data-bind="visible: leftArrowBoolean">
+      <img src="images/ic_keyboard_arrow_right_grey600_24dp.png" class="right-arrow" data-bind="visible: rightArrowBoolean">
+      <ul class="holder" data-bind="foreach: filteredList">
+        <li class="slide" data-bind="click: $root.clickMarker">
+          <hr>
+          <p><span class="v-name" data-bind="text: venue.name"></span></p>
+          <p class="v-category"><span data-bind="text: venue.categories[0].name"></span></p>
+        </li>
+      </ul>
+      <span class="no-result" data-bind="visible: !filteredList().length">No Result Found</span>
+    </div>
+
   </body>
 </html>

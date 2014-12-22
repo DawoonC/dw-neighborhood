@@ -25,6 +25,8 @@ function MapViewModel() {
   self.keyword = ko.observable(''); // search keyword. This keyword is used for place filtering
   self.listBoolean = ko.observable(true); // boolean value for list toggle
   self.settingsBoolean = ko.observable(true); // boolean value for setting toggle
+  self.leftArrowBoolean = ko.observable(false); // boolean value for left arrow toggle
+  self.rightArrowBoolean = ko.observable(true); // boolean value for right arrow toggle
 
   // list toggle method. open/close the list view
   self.listToggle = function() {
@@ -120,8 +122,8 @@ function MapViewModel() {
 
   // set neighborhood marker on the map and get popular places from API
   function getNeighborhoodInformation(placeData) {
-    var lat = placeData.geometry.location.k;
-    var lng = placeData.geometry.location.B;
+    var lat = placeData.geometry.location.lat();
+    var lng = placeData.geometry.location.lng();
     var name = placeData.name;
     preferredLocation = new google.maps.LatLng(lat, lng);
     map.setCenter(preferredLocation);
@@ -263,11 +265,12 @@ function MapViewModel() {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(startingToken + endingToken + fsToken);
       infowindow.open(map, this);
+      map.panTo(position);
     });
   }
 
   // remove markers of popular places from the map
-  // this method is called when neightborhood is newly defined
+  // this method is called when neighborhood is newly defined
   function removeVenueMarkers() {
     for (var i in venueMarkers) {
       venueMarkers[i].marker.setMap(null);
@@ -282,6 +285,124 @@ function MapViewModel() {
   window.addEventListener('resize', function(e) {
     map.fitBounds(mapBounds);
     $("#map").height($(window).height());
+  });
+
+  // Computed binding for horizontally swipeable list
+  // referenced from http://css-tricks.com/the-javascript-behind-touch-friendly-sliders
+  self.mobileList = ko.computed(function() {
+    if ($(window).width() < 900) {
+      $('.holder').css('width', (self.filteredList().length * 100) + '%');
+      $('.slider').width($(window).width()-20);
+      $('.slide').width($(window).width()-20);
+
+      if (navigator.msMaxTouchPoints) {
+        $('.slider').addClass('ms-touch');
+      } else {
+        var slider = {
+          el: {
+            slider: $(".slider"),
+            holder: $(".holder")
+          },
+          slideWidth: $('.slider').width(),
+          touchstartx: undefined,
+          touchmovex: undefined,
+          movex: undefined,
+          index: 0,
+          longTouch: undefined,
+
+          // initiate UI event binding
+          init: function() {
+            this.bindUIEvents();
+          },
+
+          // reset position
+          reset: function() {
+            this.el.holder.css('transform', 'translate3d(-' + this.index * this.slideWidth + 'px,0,0)');
+            this.movex = 0;
+            this.index = 0;
+            if (self.filteredList().length > 0) {
+              ($('.slide'))[0].click();
+            }
+          },
+
+          // binds touch events to the element
+          bindUIEvents: function() {
+            this.el.holder.on("touchstart", function(event) {
+              slider.start(event);
+            });
+            this.el.holder.on("touchmove", function(event) {
+              slider.move(event);
+            });
+            this.el.holder.on("touchend", function(event) {
+              slider.end(event);
+            });
+          },
+
+          start: function(event) {
+            // Test for flick.
+            this.longTouch = false;
+            // Get the original touch position.
+            this.touchstartx = event.originalEvent.touches[0].pageX;
+            // The movement gets all janky if there's a transition on the elements.
+            $('.animate').removeClass('animate');
+          },
+
+          move: function(event) {
+            // Continuously return touch position.
+            this.touchmovex = event.originalEvent.touches[0].pageX;
+            // Calculate distance to translate holder.
+            this.movex = this.index * this.slideWidth + (this.touchstartx - this.touchmovex);
+            // Makes the holder stop moving when there is no more content.
+            if (this.movex < this.slideWidth*self.filteredList().length-1) {
+              this.el.holder.css('transform', 'translate3d(-' + this.movex + 'px,0,0)');
+            }
+          },
+
+          end: function(event) {
+            // Calculate the distance swiped.
+            var absMove = Math.abs(this.index * this.slideWidth - this.movex);
+            // Calculate the index. All other calculations are based on the index.
+            if (absMove > this.slideWidth / 2 || this.longTouch === false) {
+              if (this.movex > this.index * this.slideWidth && this.index < self.filteredList().length-1) {
+                this.index++;
+              } else if (this.movex < this.index * this.slideWidth && this.index > 0) {
+                this.index--;
+              }
+            }
+            // trigger click event to the focused list item
+            $('.slide')[this.index].click();
+
+            // toggle arrow booleans appropriately
+            if (this.index === 0 || self.filteredList().length === 0) {
+              self.leftArrowBoolean(false);
+            } else {
+              self.leftArrowBoolean(true);
+            }
+            if (this.index === self.filteredList().length-1 || self.filteredList().length < 2) {
+              self.rightArrowBoolean(false);
+            } else {
+              self.rightArrowBoolean(true);
+            }
+            // Move and animate the elements.
+            this.el.holder.addClass('animate').css('transform', 'translate3d(-' + this.index * this.slideWidth + 'px,0,0)');
+          }
+        };
+
+        slider.init();
+
+        // reset the slider when keyword is changed
+        if (self.keyword() != '' || $('.slide').length > 0) {
+          slider.reset();
+          self.leftArrowBoolean(false);
+        }
+        // toggle right arrow boolean
+        if (self.filteredList().length < 2) {
+          self.rightArrowBoolean(false);
+        } else {
+          self.rightArrowBoolean(true);
+        }
+      }
+    }
   });
 }
 
